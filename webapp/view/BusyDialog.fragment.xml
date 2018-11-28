@@ -1,0 +1,9 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core">
+	<BusyDialog
+		title="Searching GPS"
+		text="Searching for GPS signal..."
+		showCancelButton="true"
+		close="onDialogClosed"/>
+</core:FragmentDefinition>
