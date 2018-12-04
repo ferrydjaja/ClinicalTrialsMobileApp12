@@ -2,8 +2,6 @@ sap.ui.define(["sap/ui/core/mvc/Controller", './Formatter', ], function(Controll
     "use strict";
 
     var busyDialog = (busyDialog) ? busyDialog : new sap.m.BusyDialog({
-		text: "{i18n>MSG0}",
-        title: "{i18n>MSG1}"
     });
     
     return Controller.extend("ClinicalTrials.ClinicalTrials.controller.Favorite", {
@@ -89,7 +87,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller", './Formatter', ], function(Controll
                                 url: "i18n/i18n.properties"
                             }).getText("NOT_SECURE"), {
                                 icon: sap.m.MessageBox.Icon.INFORMATION,
-                                title: "{i18n>WELCOME_TITLE}",
+                                title: this_.getView().getModel("i18n").getResourceBundle().getText("WELCOME_TITLE"),
                                 actions: sap.m.MessageBox.Action.OK,
                                 onClose: null,
                                 //styleClass: ""                        
@@ -100,7 +98,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller", './Formatter', ], function(Controll
                                 url: "i18n/i18n.properties"
                             }).getText("CONN_FAILED"), {
                                 icon: sap.m.MessageBox.Icon.INFORMATION,
-                                title: "{i18n>WELCOME_TITLE}",
+                                title: this_.getView().getModel("i18n").getResourceBundle().getText("WELCOME_TITLE"),
                                 actions: sap.m.MessageBox.Action.OK,
                                 onClose: null,
                                 //styleClass: ""                        
@@ -170,7 +168,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller", './Formatter', ], function(Controll
                         jQuery.sap.require("sap.m.MessageBox");
                         sap.m.MessageBox.show(errorThrown, {
                             icon: sap.m.MessageBox.Icon.INFORMATION,
-                            title: "{i18n>WELCOME_TITLE}",
+                            title: this_.getView().getModel("i18n").getResourceBundle().getText("WELCOME_TITLE"),
                             actions: sap.m.MessageBox.Action.OK,
                             onClose: null,
                             //styleClass: ""                        
@@ -233,7 +231,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller", './Formatter', ], function(Controll
 						url: "i18n/i18n.properties"
 					}).getText("NOT_SECURE"), {
 						icon: sap.m.MessageBox.Icon.INFORMATION,
-						title: "{i18n>WELCOME_TITLE}",
+						title: this_.getView().getModel("i18n").getResourceBundle().getText("WELCOME_TITLE"),
 						actions: sap.m.MessageBox.Action.OK,
 						onClose: null,
 						//styleClass: ""                        
@@ -244,7 +242,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller", './Formatter', ], function(Controll
 						url: "i18n/i18n.properties"
 					}).getText("CONN_FAILED"), {
 						icon: sap.m.MessageBox.Icon.INFORMATION,
-						title: "{i18n>WELCOME_TITLE}",
+						title: this_.getView().getModel("i18n").getResourceBundle().getText("WELCOME_TITLE"),
 						actions: sap.m.MessageBox.Action.OK,
 						onClose: null,
 						//styleClass: ""                        
@@ -383,6 +381,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller", './Formatter', ], function(Controll
             var lat = oGModel.oData.UserLoc[0].split(";")[0];
             var lng = oGModel.oData.UserLoc[0].split(";")[1];
             var dist = oGModel.oData.UserLoc[0].split(";")[2];
+            var recrs = oGModel.oData.UserLoc[0].split(";")[3];
 
 			var oModelPath = sap.ui.getCore().getModel('scrmodel');
             var conn = CryptoJS.AES.decrypt(oModelPath.oData[0].conn, "pfect");
@@ -394,7 +393,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller", './Formatter', ], function(Controll
                 type: 'GET',
                 async: true,
                 cache: true,
-                url: conn + "?q=2&nctid=" + nct_id + "&lat=" + lat + "&lng=" + lng,
+                url: conn + "?q=2&nctid=" + nct_id + "&lat=" + lat + "&lng=" + lng + "&dist=&recrs=",
                 timeout: 600000,
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",
@@ -489,7 +488,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller", './Formatter', ], function(Controll
                             url: "i18n/i18n.properties"
                         }).getText("NO_INFO"), {
                             icon: sap.m.MessageBox.Icon.INFORMATION,
-                            title: "{i18n>WELCOME_TITLE}",
+                            title: this_.getView().getModel("i18n").getResourceBundle().getText("WELCOME_TITLE"),
                             actions: sap.m.MessageBox.Action.OK,
                             onClose: null,
                             //styleClass: ""                        
@@ -504,7 +503,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller", './Formatter', ], function(Controll
                     jQuery.sap.require("sap.m.MessageBox");
                     sap.m.MessageBox.show(errorThrown, {
                         icon: sap.m.MessageBox.Icon.INFORMATION,
-                        title: "{i18n>WELCOME_TITLE}",
+                        title: this_.getView().getModel("i18n").getResourceBundle().getText("WELCOME_TITLE"),
                         actions: sap.m.MessageBox.Action.OK,
                         onClose: null,
                         //styleClass: ""                        
@@ -601,7 +600,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller", './Formatter', ], function(Controll
                         jQuery.sap.require("sap.m.MessageBox");
                         sap.m.MessageBox.show(errorThrown, {
                             icon: sap.m.MessageBox.Icon.INFORMATION,
-                            title: "{i18n>WELCOME_TITLE}",
+                            title: this_.getView().getModel("i18n").getResourceBundle().getText("WELCOME_TITLE"),
                             actions: sap.m.MessageBox.Action.OK,
                             onClose: null,
                             //styleClass: ""                        
@@ -626,7 +625,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller", './Formatter', ], function(Controll
 						url: "i18n/i18n.properties"
 					}).getText("NOT_SECURE"), {
 						icon: sap.m.MessageBox.Icon.INFORMATION,
-						title: "{i18n>WELCOME_TITLE}",
+						title: this_.getView().getModel("i18n").getResourceBundle().getText("WELCOME_TITLE"),
 						actions: sap.m.MessageBox.Action.OK,
 						onClose: null,
 						//styleClass: ""                        
@@ -637,7 +636,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller", './Formatter', ], function(Controll
 						url: "i18n/i18n.properties"
 					}).getText("CONN_FAILED"), {
 						icon: sap.m.MessageBox.Icon.INFORMATION,
-						title: "{i18n>WELCOME_TITLE}",
+						title: this_.getView().getModel("i18n").getResourceBundle().getText("WELCOME_TITLE"),
 						actions: sap.m.MessageBox.Action.OK,
 						onClose: null,
 						//styleClass: ""                        
