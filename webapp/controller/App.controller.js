@@ -27,7 +27,7 @@ sap.ui.define([
                         url: "i18n/i18n.properties"
                     }).getText("NOT_SECURE"), {
                         icon: sap.m.MessageBox.Icon.INFORMATION,
-                        title: "{i18n>WELCOME_TITLE}",
+                        title: this_.getView().getModel("i18n").getResourceBundle().getText("WELCOME_TITLE"),
                         actions: sap.m.MessageBox.Action.OK,
                         onClose: null,
                         //styleClass: ""                        
@@ -38,7 +38,7 @@ sap.ui.define([
                         url: "i18n/i18n.properties"
                     }).getText("CONN_FAILED"), {
                         icon: sap.m.MessageBox.Icon.INFORMATION,
-                        title: "{i18n>WELCOME_TITLE}",
+                        title: this_.getView().getModel("i18n").getResourceBundle().getText("WELCOME_TITLE"),
                         actions: sap.m.MessageBox.Action.OK,
                         onClose: null,
                         //styleClass: ""                        
@@ -48,60 +48,51 @@ sap.ui.define([
 
         },
 
-        _makeRequest: function() {
+		_makeRequest: function() {
+
             cordova.plugins.diagnostic.isLocationEnabled(function(enabled) {
-            	
-            	alert(enabled);
-                if (!enabled) {
+                if (!enabled) { //if location service is not enabled, then opn the Location Setting
 
-                    //cordova.plugins.locationAccuracy.canRequest(function(canRequest) {
-                        //if (canRequest) {
+                    jQuery.sap.require("sap.m.MessageBox");
+                    sap.m.MessageBox.show(jQuery.sap.resources({
+                        url: "i18n/i18n.properties"
+                    }).getText("LOC_FAILED"), {
+                        icon: sap.m.MessageBox.Icon.INFORMATION,
+                        title: "Location Services is disabled",
+                        actions: ["No, Thanks", "Go to Settings"],
+                        onClose: function(sAction) {
+                            console.log("Action selected: " + sAction);
 
-                            cordova.plugins.locationAccuracy.request(function() {
-                                    alert("Location accuracy request successful");
-                                }, function(error) {
-                                    alert("Error requesting location accuracy: " + JSON.stringify(error));
-                                    if (error) {
-
-                                        alert("error code=" + error.code + "; error message=" + error.message);
-                                        
-                                        if (error.code === cordova.plugins.locationAccuracy.ERROR_USER_DISAGREED) {
-                                            alert("YEEE");
-                                        }
-
-                                        if (error.code !== cordova.plugins.locationAccuracy.ERROR_USER_DISAGREED) {
-
-											jQuery.sap.require("sap.m.MessageBox");
-											sap.m.MessageBox.show(jQuery.sap.resources({
-												url: "i18n/i18n.properties"
-											}).getText("LOC_FAILED"), {
-												icon: sap.m.MessageBox.Icon.INFORMATION,
-												title: "Location Services is disabled",
-												actions: ["No, Thanks", "Go to Settings"],
-												onClose:  function(sAction) {
-													alert("Action selected: " + sAction);
-													
-													if(sAction == "Go to Settings") {
-														cordova.plugins.locationAccuracy.REQUEST_PRIORITY_HIGH_ACCURACY;
-														cordova.plugins.diagnostic.switchToLocationSettings();
-													}
-												},
-												//styleClass: ""                        
-											});
-
-                                        }
-                                    }
-                                }//, cordova.plugins.locationAccuracy.REQUEST_PRIORITY_HIGH_ACCURACY // iOS will ignore this
-                            );
-
-                        //} else {
-                            // On iOS, this will occur if Location Services is currently on OR a request is currently in progress.
-                            // On Android, this will occur if the app doesn't have authorization to use location.
-                           // alert("Cannot request location accuracy");
-                        //}
-                    //});
-              }
-           });
+                            if (sAction == "Go to Settings") {
+                                cordova.plugins.diagnostic.switchToLocationSettings();
+                            }
+                        },
+                        //styleClass: ""                        
+                    });
+                } else {
+					//location service is enabled, request for high accuracy
+					cordova.plugins.locationAccuracy.canRequest(function(canRequest){
+						//On iOS, this will return true if Location Services is currently OFF and request is not currently in progress. 
+						//On Android, this will return true if the app has authorization to use location.
+						if(canRequest){
+							cordova.plugins.locationAccuracy.request(function (success){
+								console.log("Successfully requested accuracy: "+success.message);
+							}, function (error){
+							   console.error("Accuracy request failed: error code="+error.code+"; error message="+error.message);
+							   if(error.code !== cordova.plugins.locationAccuracy.ERROR_USER_DISAGREED){
+								   if(window.confirm("Failed to automatically set Location Mode to 'High Accuracy'. Would you like to switch to the Location Settings page and do this manually?")){
+									   cordova.plugins.diagnostic.switchToLocationSettings();
+								   }
+							   } else {
+									//this_.onProcess('', '');
+							   }
+							}, cordova.plugins.locationAccuracy.REQUEST_PRIORITY_HIGH_ACCURACY);
+						}else{
+							// request location permission and try again
+						}
+					});
+				}
+            });
         },
 
         onCheckCert: function(callback) {
