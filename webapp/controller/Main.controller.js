@@ -71,7 +71,7 @@ sap.ui.define([
 						url: "i18n/i18n.properties"
 					}).getText("NOT_SECURE"), {
 						icon: sap.m.MessageBox.Icon.INFORMATION,
-						title: "{i18n>WELCOME_TITLE}",
+						title: this_.getView().getModel("i18n").getResourceBundle().getText("WELCOME_TITLE"),
 						actions: sap.m.MessageBox.Action.OK,
 						onClose: null,
 						//styleClass: ""                        
@@ -82,7 +82,7 @@ sap.ui.define([
 						url: "i18n/i18n.properties"
 					}).getText("CONN_FAILED"), {
 						icon: sap.m.MessageBox.Icon.INFORMATION,
-						title: "{i18n>WELCOME_TITLE}",
+						title: this_.getView().getModel("i18n").getResourceBundle().getText("WELCOME_TITLE"),
 						actions: sap.m.MessageBox.Action.OK,
 						onClose: null,
 						//styleClass: ""                        
