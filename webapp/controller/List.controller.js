@@ -1,4 +1,4 @@
-sap.ui.define(["sap/ui/core/mvc/Controller", './Formatter'], function(Controller) {
+sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageToast", "./Formatter"], function(Controller, MessageToast) {
     "use strict";
 
     return Controller.extend("ClinicalTrials.ClinicalTrials.controller.List", {
@@ -171,7 +171,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller", './Formatter'], function(Controller
 						url: "i18n/i18n.properties"
 					}).getText("NOT_SECURE"), {
 						icon: sap.m.MessageBox.Icon.INFORMATION,
-						title: "{i18n>WELCOME_TITLE}",
+						title: this_.getView().getModel("i18n").getResourceBundle().getText("WELCOME_TITLE"),
 						actions: sap.m.MessageBox.Action.OK,
 						onClose: null,
 						//styleClass: ""                        
@@ -182,7 +182,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller", './Formatter'], function(Controller
 						url: "i18n/i18n.properties"
 					}).getText("CONN_FAILED"), {
 						icon: sap.m.MessageBox.Icon.INFORMATION,
-						title: "{i18n>WELCOME_TITLE}",
+						title: this_.getView().getModel("i18n").getResourceBundle().getText("WELCOME_TITLE"),
 						actions: sap.m.MessageBox.Action.OK,
 						onClose: null,
 						//styleClass: ""                        
@@ -198,8 +198,6 @@ sap.ui.define(["sap/ui/core/mvc/Controller", './Formatter'], function(Controller
 
         onProcess: function(oEvent, nct_id) {
             var busyDialog = (busyDialog) ? busyDialog : new sap.m.BusyDialog({
-                text: "{i18n>MSG0}",
-                title: "{i18n>MSG1}"
             });
 
             function wasteTime() {
@@ -339,6 +337,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller", './Formatter'], function(Controller
             var lat = oGModel.oData.UserLoc[0].split(";")[0];
             var lng = oGModel.oData.UserLoc[0].split(";")[1];
             var dist = oGModel.oData.UserLoc[0].split(";")[2];
+            var recrs = oGModel.oData.UserLoc[0].split(";")[3];
 
 			var this_ = this;
 
@@ -350,7 +349,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller", './Formatter'], function(Controller
                 type: 'GET',
                 async: true,
                 cache: true,
-                url: conn + "?q=2&nctid=" + nct_id + "&lat=" + lat + "&lng=" + lng + "&dist=" + dist,
+                url: conn + "?q=2&nctid=" + nct_id + "&lat=" + lat + "&lng=" + lng + "&dist=" + dist + "&recrs=" + recrs,
                 timeout: 600000, 
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",
@@ -446,7 +445,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller", './Formatter'], function(Controller
                             url: "i18n/i18n.properties"
                         }).getText("NO_INFO"), {
                             icon: sap.m.MessageBox.Icon.INFORMATION,
-                            title: "{i18n>WELCOME_TITLE}",
+                            title: this_.getView().getModel("i18n").getResourceBundle().getText("WELCOME_TITLE"),
                             actions: sap.m.MessageBox.Action.OK,
                             onClose: null,
                             //styleClass: ""                        
@@ -461,7 +460,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller", './Formatter'], function(Controller
                     jQuery.sap.require("sap.m.MessageBox");
                     sap.m.MessageBox.show(errorThrown, {
                         icon: sap.m.MessageBox.Icon.INFORMATION,
-                        title: "{i18n>WELCOME_TITLE}",
+                        title: this_.getView().getModel("i18n").getResourceBundle().getText("WELCOME_TITLE"),
                         actions: sap.m.MessageBox.Action.OK,
                         onClose: null,
                         //styleClass: ""                        
@@ -514,7 +513,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller", './Formatter'], function(Controller
 									url: "i18n/i18n.properties"
 									}).getText("SAVE_SUCC"), {
 								icon: sap.m.MessageBox.Icon.INFORMATION,
-								title: "{i18n>WELCOME_TITLE}",
+								title: this.getView().getModel("i18n").getResourceBundle().getText("WELCOME_TITLE"),
 								actions: sap.m.MessageBox.Action.OK,
 								onClose: null,
 								//styleClass: ""                        
@@ -562,6 +561,18 @@ sap.ui.define(["sap/ui/core/mvc/Controller", './Formatter'], function(Controller
 
             this.oList = this.getView().byId("vbitable");
             this.oList.getBinding("items").filter(filters);
+        },
+        
+        onSelectChanged: function(oEvent) {
+            var key = oEvent.getParameters().key;
+
+			if(key == '1') { //Map tab				
+				var oModel = this.getView().getModel();
+				var spots = oModel.getData().modelData[0].Spots;
+				if(spots.length == 0) {					
+					MessageToast.show(this.getView().getModel("i18n").getResourceBundle().getText("NO_REC"));
+				}
+            } 
         }
     });
 });
