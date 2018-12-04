@@ -8,8 +8,6 @@ sap.ui.define([
     var _dialog;
 
     var busyDialog = (busyDialog) ? busyDialog : new sap.m.BusyDialog({
-        text: "{i18n>MSG0}",
-        title: "{i18n>MSG1}"
     });
 
     return Controller.extend("ClinicalTrials.ClinicalTrials.controller.Feedback", {
@@ -183,9 +181,13 @@ sap.ui.define([
                         if (latlng == "" || latlng == null) {
                             this_.onOpenDialog();
                             navigator.geolocation.getCurrentPosition(this_.onGeoSuccess.bind(this_), this_.onGeoNoResult.bind(this_), {
+                                //Android
                                 enableHighAccuracy: true,
                                 timeout: 2000,
                                 maximumAge: 0
+                                
+                                //iOS
+                                // enableHighAccuracy: true
                             });
                         } else {
                             var lat = latlng.split(';')[0];
@@ -204,7 +206,7 @@ sap.ui.define([
                                         url: "i18n/i18n.properties"
                                     }).getText("NOT_SECURE"), {
                                         icon: sap.m.MessageBox.Icon.INFORMATION,
-                                        title: "{i18n>WELCOME_TITLE}",
+                                        title: this_.getView().getModel("i18n").getResourceBundle().getText("WELCOME_TITLE"),
                                         actions: sap.m.MessageBox.Action.OK,
                                         onClose: null,
                                         //styleClass: ""                        
@@ -215,7 +217,7 @@ sap.ui.define([
                                         url: "i18n/i18n.properties"
                                     }).getText("CONN_FAILED"), {
                                         icon: sap.m.MessageBox.Icon.INFORMATION,
-                                        title: "{i18n>WELCOME_TITLE}",
+                                        title: this_.getView().getModel("i18n").getResourceBundle().getText("WELCOME_TITLE"),
                                         actions: sap.m.MessageBox.Action.OK,
                                         onClose: null,
                                         //styleClass: ""                        
@@ -236,7 +238,7 @@ sap.ui.define([
                     url: "i18n/i18n.properties"
                 }).getText("VALID_KEYWORD"), {
                     icon: sap.m.MessageBox.Icon.INFORMATION,
-                    title: "{i18n>WELCOME_TITLE}",
+                    title: this.getView().getModel("i18n").getResourceBundle().getText("WELCOME_TITLE"),
                     actions: sap.m.MessageBox.Action.OK,
                     onClose: null,
                     //styleClass: ""                        
@@ -304,7 +306,7 @@ sap.ui.define([
                         url: "i18n/i18n.properties"
                     }).getText("NOT_SECURE"), {
                         icon: sap.m.MessageBox.Icon.INFORMATION,
-                        title: "{i18n>WELCOME_TITLE}",
+                        title: this_.getView().getModel("i18n").getResourceBundle().getText("WELCOME_TITLE"),
                         actions: sap.m.MessageBox.Action.OK,
                         onClose: null,
                         //styleClass: ""                        
@@ -315,7 +317,7 @@ sap.ui.define([
                         url: "i18n/i18n.properties"
                     }).getText("CONN_FAILED"), {
                         icon: sap.m.MessageBox.Icon.INFORMATION,
-                        title: "{i18n>WELCOME_TITLE}",
+                        title: this_.getView().getModel("i18n").getResourceBundle().getText("WELCOME_TITLE"),
                         actions: sap.m.MessageBox.Action.OK,
                         onClose: null,
                         //styleClass: ""                        
@@ -361,7 +363,7 @@ sap.ui.define([
                         url: "i18n/i18n.properties"
                     }).getText("NOT_SECURE"), {
                         icon: sap.m.MessageBox.Icon.INFORMATION,
-                        title: "{i18n>WELCOME_TITLE}",
+                        title: this_.getView().getModel("i18n").getResourceBundle().getText("WELCOME_TITLE"),
                         actions: sap.m.MessageBox.Action.OK,
                         onClose: null,
                         //styleClass: ""                        
@@ -372,7 +374,7 @@ sap.ui.define([
                         url: "i18n/i18n.properties"
                     }).getText("CONN_FAILED"), {
                         icon: sap.m.MessageBox.Icon.INFORMATION,
-                        title: "{i18n>WELCOME_TITLE}",
+                        title: this_.getView().getModel("i18n").getResourceBundle().getText("WELCOME_TITLE"),
                         actions: sap.m.MessageBox.Action.OK,
                         onClose: null,
                         //styleClass: ""                        
@@ -556,7 +558,7 @@ sap.ui.define([
 
                             oModel.setData({
                                 modelData: [data],
-                                UserLoc: [lat + ';' + lng + ';' + dist],
+                                UserLoc: [lat + ';' + lng + ';' + dist + ';' + recrs],
                                 cond: [this_.toTitleCase(cond)]
                             });
                             sap.ui.getCore().setModel(oModel, "listmodel");
@@ -569,7 +571,7 @@ sap.ui.define([
                                 url: "i18n/i18n.properties"
                             }).getText("NO_INFO"), {
                                 icon: sap.m.MessageBox.Icon.INFORMATION,
-                                title: "{i18n>WELCOME_TITLE}",
+                                title: this_.getView().getModel("i18n").getResourceBundle().getText("WELCOME_TITLE"),
                                 actions: sap.m.MessageBox.Action.OK,
                                 onClose: null,
                                 //styleClass: ""                        
@@ -584,7 +586,7 @@ sap.ui.define([
                             url: "i18n/i18n.properties"
                         }).getText("NO_INFO"), {
                             icon: sap.m.MessageBox.Icon.INFORMATION,
-                            title: "{i18n>WELCOME_TITLE}",
+                            title: this_.getView().getModel("i18n").getResourceBundle().getText("WELCOME_TITLE"),
                             actions: sap.m.MessageBox.Action.OK,
                             onClose: null,
                             //styleClass: ""                        
@@ -599,7 +601,7 @@ sap.ui.define([
                         url: "i18n/i18n.properties"
                     }).getText("ERROR_INFO"), {
                         icon: sap.m.MessageBox.Icon.INFORMATION,
-                        title: "{i18n>WELCOME_TITLE}",
+                        title: this_.getView().getModel("i18n").getResourceBundle().getText("WELCOME_TITLE"),
                         actions: sap.m.MessageBox.Action.OK,
                         onClose: null,
                         //styleClass: ""                        
@@ -655,7 +657,7 @@ sap.ui.define([
                                 url: "i18n/i18n.properties"
                             }).getText("LOCATION_ERR"), {
                                 icon: sap.m.MessageBox.Icon.INFORMATION,
-                                title: "{i18n>WELCOME_TITLE}",
+                                title: this_.getView().getModel("i18n").getResourceBundle().getText("WELCOME_TITLE"),
                                 actions: sap.m.MessageBox.Action.OK,
                                 onClose: null,
                                 //styleClass: ""                        
