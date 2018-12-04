@@ -15,7 +15,7 @@
             </Bar>
         </customHeader>
         <content>
-            <IconTabBar expandable="false" expanded="true" applyContentPadding="false" backgroundDesign="Transparent" upperCase="false" visible="true" selectedKey="Ok" stretchContentHeight="true">
+            <IconTabBar expandable="false" expanded="true" applyContentPadding="false" backgroundDesign="Transparent" upperCase="false" visible="true" selectedKey="Ok" stretchContentHeight="true" select="onSelectChanged">
                 <items>
                     <IconTabFilter icon="sap-icon://list" iconColor="Default" text="{i18n&gt;List}" count="" design="Vertical" showAll="false" textDirection="Inherit" enabled="true" visible="true" iconDensityAware="false">
                         <content>
@@ -53,7 +53,7 @@
                         </ScrollContainer>
                     </IconTabFilter>
                     <IconTabSeparator icon="" iconDensityAware="false" />
-                    <IconTabFilter icon="sap-icon://map-2" iconColor="Default" text="{i18n&gt;Map}" count="" design="Vertical" showAll="false" textDirection="Inherit" enabled="true" visible="true" iconDensityAware="false">
+                    <IconTabFilter icon="sap-icon://map-2" iconColor="Default" text="{i18n&gt;Map}" count="" design="Vertical" showAll="false" textDirection="Inherit" enabled="true" visible="true" iconDensityAware="false" key="1">
                         <content>
                             <l:Splitter>
                                 <Table id="vbitable" selectionChange="onSelectionChanged" items="{/modelData/0/SpotsC}" mode="MultiSelect" backgroundDesign="Solid">
