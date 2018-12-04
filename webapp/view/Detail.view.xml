@@ -14,7 +14,7 @@
             </Bar>
         </customHeader>
         <content>
-            <IconTabBar expandable="false" expanded="true" applyContentPadding="false" backgroundDesign="Transparent" upperCase="false" visible="true" selectedKey="Ok" stretchContentHeight="true" showOverflowSelectList="true" class="sapUiResponsiveContentPadding" mode="Inline">
+            <IconTabBar expandable="false" expanded="true" applyContentPadding="false" backgroundDesign="Transparent" upperCase="false" visible="true" selectedKey="Ok" stretchContentHeight="true" showOverflowSelectList="true" class="sapUiResponsiveContentPadding" mode="Inline" select="onSelectChanged">
                 <items>
                     <IconTabFilter icon="sap-icon://list" iconColor="Neutral" text="{i18n&gt;Info}" count="" design="Vertical" showAll="false" textDirection="Inherit" enabled="true" visible="true" iconDensityAware="false">
                         <ScrollContainer height="100%" width="100%" horizontal="false" vertical="true">
@@ -133,7 +133,7 @@
                         </ScrollContainer>
                     </IconTabFilter>
                     <IconTabSeparator icon="" iconDensityAware="false" />
-                    <IconTabFilter icon="sap-icon://map-2" iconColor="Neutral" text="{i18n&gt;Location}" count="" design="Vertical" showAll="false" textDirection="Inherit" enabled="true" visible="true" iconDensityAware="false">
+                    <IconTabFilter icon="sap-icon://map-2" iconColor="Neutral" text="{i18n&gt;Location}" count="" design="Vertical" showAll="false" textDirection="Inherit" enabled="true" visible="true" iconDensityAware="false" key="1">
                         <content>
                             <l:ResponsiveSplitter defaultPane="default">
                                 <l:PaneContainer>
@@ -188,7 +188,7 @@
                         </content>
                     </IconTabFilter>
                     <IconTabSeparator icon="" iconDensityAware="false" />
-                    <IconTabFilter icon="sap-icon://map-2" iconColor="Neutral" text="{i18n&gt;RLocation}" count="" design="Vertical" showAll="false" textDirection="Inherit" enabled="true" visible="true" iconDensityAware="false">
+                    <IconTabFilter icon="sap-icon://map-2" iconColor="Neutral" text="{i18n&gt;RLocation}" count="" design="Vertical" showAll="false" textDirection="Inherit" enabled="true" visible="true" iconDensityAware="false" key="2">
                         <ScrollContainer height="100%" width="100%" horizontal="false" vertical="true">
                             <content>
                                 <Panel headerText="{i18n&gt;LocationB}" expandable="true" expanded="true">
