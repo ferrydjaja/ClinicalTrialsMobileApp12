@@ -1,7 +1,8 @@
 sap.ui.define([
-	"sap/ui/core/mvc/Controller"
-], function (Controller) {
-	"use strict";
+    "sap/ui/core/mvc/Controller",
+    "sap/m/MessageToast"
+], function(Controller, MessageToast) {
+    "use strict";
 
 	return Controller.extend("ClinicalTrials.ClinicalTrials.controller.Detail", {
 
@@ -54,6 +55,7 @@ sap.ui.define([
 					var tooltip = '';
 					var type = '';
 					var spotsidx = 0;
+					var filteredcountry = [];
 
 					for (var n = 0, len = OLoc.length; n < len; n++) {
 
@@ -112,6 +114,8 @@ sap.ui.define([
 								address: state
 							});			
 							spotsidx++;
+							
+							filteredcountry.push(country);
 						}
 
 						OLocAr.push({
@@ -174,6 +178,7 @@ sap.ui.define([
 					var oBinding = oTable.getBinding("items");
 					oBinding.sort(aSorters);
 
+					//Map in Nearby Location tab
 					oView.byId("vbi").setModel(oModel);
 					oView.setModel(oModel);
 					oView.bindElement("/modelData1/0");
@@ -208,6 +213,28 @@ sap.ui.define([
 
 					this.oVBI.setMapConfiguration(oMapConfig);
 					this.oVBI.setCenterPosition(oModel.oData.modelData1[0].centerposition);
+					
+					//To filter country with "Recruiting" status in "Recruiting Locations" Tab
+					var filters = new Array();
+					var Filter1 = [];
+					for (var n = 0, len = filteredcountry.length; n < len; n++) {
+						Filter1.push(new sap.ui.model.Filter("country", sap.ui.model.FilterOperator.EQ, filteredcountry[n]));
+					}					
+					var oCombined1 = new sap.ui.model.Filter(Filter1);
+
+					var Filter2 = [];
+					Filter2.push(new sap.ui.model.Filter("status", sap.ui.model.FilterOperator.EQ, 'Recruiting'));
+					var oCombined2 = new sap.ui.model.Filter(Filter2);
+
+					filters.push(new sap.ui.model.Filter([oCombined1, oCombined2], true));
+					this.oList = oView.byId("olocation");
+					var len = this.oList.getBinding("items").filter(filters); 
+
+					var olenm = new sap.ui.model.json.JSONModel();
+                    olenm.setData({
+						len: len
+                    });
+					sap.ui.getCore().setModel(olenm, "lenrecrloc");
 				}
 			});
 		},
@@ -274,6 +301,24 @@ sap.ui.define([
 					this.oVBI.zoomToGeoPosition(lons, lats);
 				}
 			}
-		}
+		},
+		
+		onSelectChanged: function(oEvent) {
+            var key = oEvent.getParameters().key;
+			var oModel = this.getView().getModel();
+
+			if(key == '1') { //Nearby Location tab				
+				var spots = oModel.getData().modelData1[0].Spots;
+				if(spots.length == 0) {					
+					MessageToast.show(this.getView().getModel("i18n").getResourceBundle().getText("NO_NEARBY_REC"));
+				}
+            } else if(key == '2') {//Recuriting Location tab				
+				var lenrecrloc = sap.ui.getCore().getModel('lenrecrloc');
+				console.log(lenrecrloc.oData.len.iLength);
+				if(lenrecrloc.oData.len.iLength == 0) {					
+					MessageToast.show(this.getView().getModel("i18n").getResourceBundle().getText("NO_REC_REC"));
+				}
+            };
+        }
 	});
 });
